@@ -70,7 +70,7 @@ export default function AdminLayout() {
                 </header>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-4 lg:p-6">
+                <div className="flex-1 overflow-y-auto p-2 md:p-4 lg:p-6">
                     <Outlet />
                 </div>
 

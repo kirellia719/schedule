@@ -2,44 +2,122 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 const Header = ({ period }) => {
     return (
-        <header className="w-full bg-white border-b border-gray-200 px-6 py-4 rounded-lg shadow-sm">
-            <div className="flex items-center justify-between">
+        <header
+            className="
+                rounded-xl
+                border
+                border-slate-200
+                bg-white
+                px-4
+                py-4
+                shadow-sm
+                sm:px-6
+            "
+        >
+            <div
+                className="
+                    flex
+                    flex-col
+                    gap-4
+                    sm:flex-row
+                    sm:items-center
+                    sm:justify-between
+                "
+            >
 
-                {/* Left: Page title */}
-                <div>
-                    <h1 className="text-2xl font-semibold text-gray-800">
+                {/* Title */}
+
+                <div className="hidden sm:block">
+
+                    <h1 className="text-xl font-semibold text-slate-800 sm:text-2xl">
                         Tra cứu
                     </h1>
+
                 </div>
 
+                {/* Period */}
 
-                {/* Right: Schedule info */}
                 <div className="flex items-center gap-3">
 
-                    {/* Icon */}
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100">
+                    <div
+                        className="
+                            flex
+                            h-10
+                            w-10
+                            shrink-0
+                            items-center
+                            justify-center
+                            rounded-full
+                            bg-blue-100
+                            sm:h-12
+                            sm:w-12
+                        "
+                    >
+
                         <CalendarMonthIcon
-                            className="text-blue-900"
-                            fontSize="medium"
+                            className="text-blue-700"
+                            fontSize="small"
                         />
+
                     </div>
 
+                    <div className="min-w-0">
 
-                    {/* Schedule name + status */}
-                    <div className="flex flex-col">
-                        <span className="text-base font-semibold text-gray-800">
-                            {period?.name}
-                        </span>
+                        <div
+                            className="
+                                truncate
+                                text-sm
+                                font-semibold
+                                text-slate-800
+                                sm:text-base
+                            "
+                        >
+                            {period?.name ?? "Chưa có thời khóa biểu"}
+                        </div>
 
-                        <span className="flex items-center gap-2 text-sm text-green-600">
-                            <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                            {period?.active ? "Đang hoạt động" : "Ngưng hoạt động"}
-                        </span>
+                        <div
+                            className="
+                                mt-1
+                                flex
+                                items-center
+                                gap-2
+                                text-xs
+                                sm:text-sm
+                            "
+                        >
+
+                            <span
+                                className={`
+                                    h-2
+                                    w-2
+                                    rounded-full
+                                    ${period?.active
+                                        ? "bg-green-500"
+                                        : "bg-slate-400"
+                                    }
+                                `}
+                            />
+
+                            <span
+                                className={
+                                    period?.active
+                                        ? "text-green-600"
+                                        : "text-slate-500"
+                                }
+                            >
+                                {period?.active
+                                    ? "Đang áp dụng"
+                                    : "Chưa có thời khóa biểu đang áp dụng"}
+                            </span>
+
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
+
         </header>
     );
 };
