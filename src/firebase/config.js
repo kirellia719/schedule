@@ -3,19 +3,13 @@ import { getFirestore } from "firebase/firestore";
 
 
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    apiKey: "AIzaSyCZxnGQz_kfxr90pJ312xbnHbPgXRHZ1Eg",
+    authDomain: "tkb-school.firebaseapp.com",
+    projectId: "tkb-school",
+    storageBucket: "tkb-school.firebasestorage.app",
+    messagingSenderId: "881179203752",
+    appId: "1:881179203752:web:d3e4b97c85244019ae0a9d"
 };
-
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
