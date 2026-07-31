@@ -16,17 +16,17 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
     );
 
     // Tổng số tiết trong tuần
-    const totalLessons = Object.values(schedule ?? {}).reduce(
-        (total, day) => {
-            return (
-                total +
-                Object.values(day).filter(
-                    lesson => lesson
-                ).length
-            );
-        },
-        0
-    );
+    // const totalLessons = Object.values(schedule ?? {}).reduce(
+    //     (total, day) => {
+    //         return (
+    //             total +
+    //             Object.values(day).filter(
+    //                 lesson => lesson
+    //             ).length
+    //         );
+    //     },
+    //     0
+    // );
 
     // Chỉ lấy các tiết cần hiển thị
     const periods = PERIODS.filter(
@@ -61,13 +61,15 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                     <div className="flex flex-col items-center justify-center overflow-hidden">
                         {/* Môn học */}
                         <div className="w-full truncate font-semibold text-[9px] text-blue-900 sm:text-[11px] md:text-base">
-                            {cell.subject}
+                            {view === "teacher"
+                                ? cell.class
+                                : cell.subject}
                         </div>
 
                         {/* Giáo viên hoặc Lớp */}
                         <div className="mt-0.5 w-full truncate text-[8px] text-slate-500 sm:text-[10px] md:text-sm">
                             {view === "teacher"
-                                ? cell.class
+                                ? cell.subject
                                 : cell.teacher}
                         </div>
                     </div>
