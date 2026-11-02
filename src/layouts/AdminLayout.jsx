@@ -1,10 +1,22 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { Menu } from "@mui/icons-material";
 import Sidebar from "@/components/admin/Sidebar";
 
+const PAGE_TITLES = {
+    "/admin/period": "Quản lý thời khoá biểu",
+    "/admin/viewer": "Tra cứu thời khoá biểu",
+};
+
 export default function AdminLayout() {
     const [open, setOpen] = useState(false);
+    const { pathname } = useLocation();
+
+    const pageTitle = PAGE_TITLES[pathname] ?? "Quản trị";
+
+    useEffect(() => {
+        setOpen(false);
+    }, [pathname]);
 
     return (
         <div className="flex h-screen overflow-hidden bg-slate-100">
@@ -38,24 +50,24 @@ export default function AdminLayout() {
             </div>
 
             {/* Content */}
-            <main className="flex flex-1 flex-col overflow-hidden">
+            <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
 
                 {/* Mobile Header */}
                 <header
                     className="
-            sticky
-            top-0
-            z-30
-            flex
-            h-16
-            shrink-0
-            items-center
-            border-b
-            border-slate-200
-            bg-white
-            px-4
-            lg:hidden
-        "
+                        sticky
+                        top-0
+                        z-30
+                        flex
+                        h-16
+                        shrink-0
+                        items-center
+                        border-b
+                        border-slate-200
+                        bg-white
+                        px-4
+                        lg:hidden
+                    "
                 >
                     <button
                         onClick={() => setOpen(true)}
@@ -64,14 +76,16 @@ export default function AdminLayout() {
                         <Menu />
                     </button>
 
-                    <h1 className="ml-4 text-lg font-semibold text-slate-800">
-                        Dashboard
+                    <h1 className="ml-3 truncate text-base font-semibold text-slate-800 sm:text-lg">
+                        {pageTitle}
                     </h1>
                 </header>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-2 md:p-4 lg:p-6">
-                    <Outlet />
+                <div className="flex-1 overflow-y-auto">
+                    <div className="mx-auto w-full max-w-[1440px] p-3 md:p-6">
+                        <Outlet />
+                    </div>
                 </div>
 
             </main>

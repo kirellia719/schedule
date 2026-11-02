@@ -117,37 +117,41 @@ export async function setActivePeriod(periodId) {
         collection(db, "periods")
     );
 
-    // Xác định trạng thái hiện tại
     const current = snapshot.docs.find(doc => doc.id === periodId);
 
     if (!current) {
         throw new Error("Không tìm thấy Period.");
     }
 
-    const isActive = current.data().active;
+    // Đã là Period đang áp dụng thì không làm gì (không tự tắt)
+    if (current.data().active === true) {
+        return;
+    }
 
     const batch = writeBatch(db);
 
-    snapshot.forEach(doc => {
+    let changed = 0;
 
-        if (doc.id === periodId) {
+    snapshot.forEach(item => {
 
-            batch.update(doc.ref, {
-                active: !isActive,
-            });
+        // Bật đúng Period được chọn, tắt mọi Period còn lại
+        const active = item.id === periodId;
 
-        } else if (!isActive) {
-
-            // Chỉ tắt các Period khác khi đang bật Period này
-            batch.update(doc.ref, {
-                active: false,
-            });
-
+        if (item.data().active === active) {
+            return;
         }
+
+        batch.update(item.ref, {
+            active,
+        });
+
+        changed += 1;
 
     });
 
-    await batch.commit();
+    if (changed > 0) {
+        await batch.commit();
+    }
 }
 
 export async function getClasses() { }

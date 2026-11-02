@@ -3,6 +3,7 @@ import {
     LightMode,
     NightsStay,
 } from "@mui/icons-material";
+import { normalizeLessons } from "@/utils/lesson";
 
 export default function ScheduleTable({ schedule, view = "teacher" }) {
     // Tìm tiết cuối cùng có dữ liệu
@@ -42,7 +43,11 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
     );
 
     const renderCell = (dayKey, period) => {
-        const cell = schedule?.[dayKey]?.[period.key];
+        const lessons = normalizeLessons(
+            schedule?.[dayKey]?.[period.key]
+        );
+
+        const isTeacherView = view === "teacher";
 
         return (
             <td
@@ -57,21 +62,45 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                     md:p-2
                 "
             >
-                {cell && (
-                    <div className="flex flex-col items-center justify-center overflow-hidden">
-                        {/* Môn học */}
-                        <div className="w-full truncate font-semibold text-[9px] text-blue-900 sm:text-[11px] md:text-base">
-                            {view === "teacher"
-                                ? cell.class
-                                : cell.subject}
-                        </div>
+                {lessons.length > 0 && (
+                    <div className="flex w-full items-stretch justify-center overflow-hidden">
+                        {lessons.map((lesson, index) => (
+                            <div
+                                key={`${lesson.subject}-${lesson.teacher}-${index}`}
+                                className={`
+                                    min-w-0
+                                    flex-1
+                                    ${index > 0
+                                        ? "border-l border-slate-200 pl-1 sm:pl-1.5"
+                                        : ""
+                                    }
+                                `}
+                                title={[
+                                    isTeacherView
+                                        ? lesson.class
+                                        : lesson.subject,
+                                    isTeacherView
+                                        ? lesson.subject
+                                        : lesson.teacher,
+                                ]
+                                    .filter(Boolean)
+                                    .join(" · ")}
+                            >
+                                {/* Dòng chính: view lớp là môn, view giáo viên là lớp */}
+                                <div className="w-full truncate font-semibold text-[9px] text-blue-900 sm:text-[11px] md:text-base">
+                                    {isTeacherView
+                                        ? lesson.class
+                                        : lesson.subject}
+                                </div>
 
-                        {/* Giáo viên hoặc Lớp */}
-                        <div className="mt-0.5 w-full truncate text-[8px] text-slate-500 sm:text-[10px] md:text-sm">
-                            {view === "teacher"
-                                ? cell.subject
-                                : cell.teacher}
-                        </div>
+                                {/* Dòng phụ: view lớp là giáo viên, view giáo viên là môn */}
+                                <div className="mt-0.5 w-full truncate text-[8px] text-slate-500 sm:text-[10px] md:text-sm">
+                                    {isTeacherView
+                                        ? lesson.subject
+                                        : lesson.teacher}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 )}
             </td>

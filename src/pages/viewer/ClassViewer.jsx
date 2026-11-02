@@ -30,7 +30,6 @@ export default function ClassViewer() {
 
     }, [className]);
 
-
     if (loading) {
         return (
             <div className="min-h-screen flex justify-center bg-slate-100">
@@ -43,7 +42,6 @@ export default function ClassViewer() {
         );
     }
 
-
     if (!data) {
         return (
             <div className="min-h-screen flex justify-center bg-slate-100">
@@ -55,7 +53,6 @@ export default function ClassViewer() {
             </div>
         );
     }
-
 
     return (
         <div className="min-h-screen flex justify-center bg-slate-100">

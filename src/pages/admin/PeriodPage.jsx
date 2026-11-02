@@ -9,6 +9,7 @@ import { getPeriods, createPeriod, setActivePeriod, deletePeriod } from "@/servi
 export default function PeriodPage() {
     const [periods, setPeriods] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     const [openImport, setOpenImport] = useState(false);
 
@@ -18,32 +19,27 @@ export default function PeriodPage() {
 
     async function loadPeriods() {
         setLoading(true);
+        setError("");
 
         try {
             const data = await getPeriods();
 
             setPeriods(data);
+        } catch (err) {
+            console.error(err);
+
+            setError("Không tải được danh sách Period.");
         } finally {
             setLoading(false);
         }
     }
 
     async function handleImport(period) {
-        try {
+        await createPeriod(period);
 
-            await createPeriod(period);
+        await loadPeriods();
 
-            await loadPeriods();
-
-            setOpenImport(false);
-
-        } catch (err) {
-
-            console.error(err);
-
-            alert("Import thất bại.");
-
-        }
+        setOpenImport(false);
     }
 
     function handleView(period) {
@@ -101,8 +97,10 @@ export default function PeriodPage() {
 
     if (loading) {
         return (
-            <div className="flex h-full items-center justify-center">
-                Đang tải...
+            <div className="flex flex-col gap-6">
+                <div className="h-12 w-72 max-w-full animate-pulse rounded-sm bg-slate-200" />
+
+                <div className="h-72 animate-pulse rounded-2xl border border-slate-200 bg-white" />
             </div>
         );
     }
@@ -113,7 +111,22 @@ export default function PeriodPage() {
 
                 <PeriodHeader
                     onAdd={() => setOpenImport(true)}
+                    periods={periods}
                 />
+
+                {error && (
+                    <div className="flex items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        <span>{error}</span>
+
+                        <button
+                            type="button"
+                            onClick={loadPeriods}
+                            className="shrink-0 rounded-md border border-red-300 px-3 py-1.5 text-xs font-medium transition hover:bg-red-100"
+                        >
+                            Thử lại
+                        </button>
+                    </div>
+                )}
 
                 <PeriodTable
                     periods={periods}

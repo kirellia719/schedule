@@ -27,13 +27,17 @@ export default function ImportPeriodDialog({
     const inputRef = useRef();
 
     const [loading, setLoading] = useState(false);
+    const [dragging, setDragging] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     const [period, setPeriod] = useState(null);
+    const [error, setError] = useState("");
 
-    async function handleChooseFile(e) {
-        const file = e.target.files?.[0];
+    async function readFile(file) {
+        if (!file || loading) return;
 
-        if (!file) return;
+        setError("");
+        setPeriod(null);
 
         try {
             setLoading(true);
@@ -43,14 +47,41 @@ export default function ImportPeriodDialog({
             setPeriod(result);
         } catch (err) {
             console.error(err);
-            alert("Không thể đọc file Excel.");
+
+            setError(err?.message || "Không thể đọc file Excel.");
         } finally {
             setLoading(false);
         }
     }
 
+    function handleChooseFile(e) {
+        const file = e.target.files?.[0];
+
+        if (file) {
+            readFile(file);
+        }
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+
+        setDragging(false);
+
+        const file = e.dataTransfer?.files?.[0];
+
+        if (!file) return;
+
+        if (!/\.(xlsx|xls)$/i.test(file.name)) {
+            setError("Chỉ nhận file Excel (.xlsx, .xls).");
+            return;
+        }
+
+        readFile(file);
+    }
+
     function handleClose() {
         setPeriod(null);
+        setError("");
 
         if (inputRef.current) {
             inputRef.current.value = "";
@@ -59,10 +90,23 @@ export default function ImportPeriodDialog({
         onClose();
     }
 
-    function handleImport() {
-        onSubmit(period);
+    async function handleImport() {
+        if (!period || submitting) return;
 
-        handleClose();
+        try {
+            setSubmitting(true);
+            setError("");
+
+            await onSubmit(period);
+
+            handleClose();
+        } catch (err) {
+            console.error(err);
+
+            setError(err?.message || "Import thất bại.");
+        } finally {
+            setSubmitting(false);
+        }
     }
 
     async function handleCopyJson() {
@@ -93,27 +137,35 @@ export default function ImportPeriodDialog({
 
             <DialogContent dividers>
 
-                {!period && (
+                {!period && !loading && (
 
                     <div className="py-8">
 
                         <div
                             onClick={() => inputRef.current?.click()}
-                            className="
+                            onDragOver={(e) => {
+                                e.preventDefault();
+                                setDragging(true);
+                            }}
+                            onDragLeave={() => setDragging(false)}
+                            onDrop={handleDrop}
+                            className={`
                                 flex
                                 h-72
                                 w-full
+                                cursor-pointer
                                 flex-col
                                 items-center
                                 justify-center
                                 rounded-2xl
                                 border-2
                                 border-dashed
-                                border-slate-300
                                 transition
-                                hover:border-blue-500
-                                hover:bg-slate-50
-                            "
+                                ${dragging
+                                    ? "border-blue-500 bg-blue-50"
+                                    : "border-slate-300 hover:border-blue-500 hover:bg-slate-50"
+                                }
+                            `}
                         >
                             <UploadFileIcon
                                 sx={{
@@ -147,6 +199,16 @@ export default function ImportPeriodDialog({
                             accept=".xlsx,.xls"
                             onChange={handleChooseFile}
                         />
+
+                    </div>
+
+                )}
+
+                {error && (
+
+                    <div className="mt-4 whitespace-pre-line rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+
+                        {error}
 
                     </div>
 
@@ -270,6 +332,7 @@ export default function ImportPeriodDialog({
 
                 <Button
                     onClick={handleClose}
+                    disabled={submitting}
                 >
                     Hủy
                 </Button>
@@ -279,8 +342,9 @@ export default function ImportPeriodDialog({
                     <Button
                         variant="contained"
                         onClick={handleImport}
+                        disabled={submitting}
                     >
-                        Nhập
+                        {submitting ? "Đang nhập..." : "Nhập"}
                     </Button>
 
                 )}

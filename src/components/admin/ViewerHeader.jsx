@@ -4,7 +4,7 @@ const Header = ({ period }) => {
     return (
         <header
             className="
-                rounded-xl
+                rounded-2xl
                 border
                 border-slate-200
                 bg-white
@@ -12,6 +12,7 @@ const Header = ({ period }) => {
                 py-4
                 shadow-sm
                 sm:px-6
+                sm:py-5
             "
         >
             <div
@@ -27,97 +28,100 @@ const Header = ({ period }) => {
 
                 {/* Title */}
 
-                <div className="hidden sm:block">
-
-                    <h1 className="text-xl font-semibold text-slate-800 sm:text-2xl">
-                        Tra cứu
-                    </h1>
-
-                </div>
-
-                {/* Period */}
-
                 <div className="flex items-center gap-3">
 
                     <div
                         className="
                             flex
-                            h-10
-                            w-10
+                            h-11
+                            w-11
                             shrink-0
                             items-center
                             justify-center
-                            rounded-full
-                            bg-blue-100
-                            sm:h-12
-                            sm:w-12
+                            rounded-xl
+                            bg-blue-50
                         "
                     >
-
                         <CalendarMonthIcon
                             className="text-blue-700"
-                            fontSize="small"
+                            sx={{ fontSize: 22 }}
                         />
-
                     </div>
 
                     <div className="min-w-0">
 
-                        <div
-                            className="
-                                truncate
-                                text-sm
-                                font-semibold
-                                text-slate-800
-                                sm:text-base
-                            "
-                        >
-                            {period?.name ?? "Chưa có thời khóa biểu"}
-                        </div>
+                        <h1 className="text-lg font-semibold text-slate-900 sm:text-xl">
+                            Tra cứu thời khoá biểu
+                        </h1>
 
-                        <div
-                            className="
-                                mt-1
-                                flex
-                                items-center
-                                gap-2
-                                text-xs
-                                sm:text-sm
-                            "
-                        >
-
-                            <span
-                                className={`
-                                    h-2
-                                    w-2
-                                    rounded-full
-                                    ${period?.active
-                                        ? "bg-green-500"
-                                        : "bg-slate-400"
-                                    }
-                                `}
-                            />
-
-                            <span
-                                className={
-                                    period?.active
-                                        ? "text-green-600"
-                                        : "text-slate-500"
-                                }
-                            >
-                                {period?.active
-                                    ? "Đang áp dụng"
-                                    : "Chưa có thời khóa biểu đang áp dụng"}
-                            </span>
-
-                        </div>
+                        <p className="mt-0.5 truncate text-sm text-slate-500">
+                            {period?.applyDate
+                                ? `Áp dụng từ ${period.applyDate}`
+                                : "Chọn giáo viên hoặc lớp để xem lịch dạy, lịch học."}
+                        </p>
 
                     </div>
 
                 </div>
 
-            </div>
+                {/* Status */}
 
+                <div className="flex flex-wrap items-center gap-2">
+
+                    <span
+                        className="
+                            inline-flex
+                            items-center
+                            gap-2
+                            rounded-full
+                            border
+                            border-slate-200
+                            bg-slate-50
+                            px-3
+                            py-1.5
+                            text-xs
+                            font-medium
+                            text-slate-700
+                        "
+                    >
+                        {period?.name ?? "Chưa có thời khoá biểu"}
+                    </span>
+
+                    <span
+                        className={`
+                            inline-flex
+                            items-center
+                            gap-1.5
+                            rounded-full
+                            border
+                            px-3
+                            py-1.5
+                            text-xs
+                            font-medium
+                            ${period?.active
+                                ? "border-green-200 bg-green-50 text-green-700"
+                                : "border-amber-200 bg-amber-50 text-amber-700"
+                            }
+                        `}
+                    >
+                        <span
+                            className={`
+                                h-1.5
+                                w-1.5
+                                rounded-full
+                                ${period?.active
+                                    ? "bg-green-500"
+                                    : "bg-amber-500"
+                                }
+                            `}
+                        />
+
+                        {period?.active ? "Đang áp dụng" : "Chưa áp dụng"}
+                    </span>
+
+                </div>
+
+            </div>
         </header>
     );
 };

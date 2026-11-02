@@ -103,19 +103,19 @@ export default function Sidebar({
                                 onClick={() => onClose?.()}
                                 className={({ isActive }) =>
                                     `
-                                    flex
-                                    items-center
-                                    gap-4
-                                    rounded-sm
-                                    px-4
-                                    py-3
-                                    transition-all
+                                        flex
+                                        items-center
+                                        gap-4
+                                        rounded-sm
+                                        px-4
+                                        py-3
+                                        transition-all
 
-                                    ${isActive
-                                        ? "bg-blue-700 text-white shadow-lg shadow-blue-200"
-                                        : "text-slate-600 hover:bg-slate-100 hover:text-blue-600"
-                                    }
-                                `
+                                        ${isActive
+                                            ? "bg-blue-700 text-white shadow-lg shadow-blue-200"
+                                            : "text-slate-600 hover:bg-slate-100 hover:text-blue-600"
+                                        }
+                                    `
                                 }
                             >
                                 <Icon fontSize="small" />

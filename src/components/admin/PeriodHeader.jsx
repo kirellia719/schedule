@@ -1,6 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
 
-export default function PeriodHeader({ onAdd }) {
+export default function PeriodHeader({ onAdd, periods = [] }) {
+    const activePeriod = periods.find((period) => period.active);
+
     return (
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -8,16 +10,20 @@ export default function PeriodHeader({ onAdd }) {
                     Quản lý Thời khoá biểu
                 </h1>
 
-                {/* <p className="mt-1 text-sm text-slate-500">
-                    Quản lý các thời khóa biểu theo từng giai đoạn áp dụng.
-                </p> */}
+                <p className="mt-1 text-sm text-slate-500">
+                    {periods.length > 0
+                        ? `${periods.length} bản • Đang áp dụng: ${activePeriod?.name ?? "chưa có"}`
+                        : "Chưa có bản thời khoá biểu nào."}
+                </p>
             </div>
 
-            <div
+            <button
+                type="button"
                 onClick={onAdd}
                 className="
                     inline-flex
                     h-10
+                    shrink-0
                     items-center
                     justify-center
                     gap-2
@@ -37,7 +43,7 @@ export default function PeriodHeader({ onAdd }) {
                 <AddIcon sx={{ fontSize: 20 }} />
 
                 <span>Thêm Period</span>
-            </div>
+            </button>
         </div>
     );
 }

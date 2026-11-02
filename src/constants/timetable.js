@@ -1,23 +1,23 @@
 export const DAYS = [
     {
         key: "2",
-        label: "Mon",
+        label: "Thứ 2",
     },
     {
         key: "3",
-        label: "Tue",
+        label: "Thứ 3",
     },
     {
         key: "4",
-        label: "Wed",
+        label: "Thứ 4",
     },
     {
         key: "5",
-        label: "Thu",
+        label: "Thứ 5",
     },
     {
         key: "6",
-        label: "Fri",
+        label: "Thứ 6",
     },
 ];
 

@@ -13,19 +13,35 @@ export default function TeacherViewer() {
     const { teacherName } = useParams();
 
     useEffect(() => {
+        let cancelled = false;
+
         const loadData = async () => {
+            setLoading(true);
+            setData(null);
+
             try {
                 const result = await getTeacherSchedule(teacherName);
+
+                if (cancelled) return;
+
                 setData(result);
             } catch (error) {
+                if (cancelled) return;
+
                 console.error("Lỗi tải thời khóa biểu:", error);
             } finally {
-                setLoading(false);
+                if (!cancelled) {
+                    setLoading(false);
+                }
             }
         };
 
         loadData();
-    }, []);
+
+        return () => {
+            cancelled = true;
+        };
+    }, [teacherName]);
 
     if (loading) {
         return (
