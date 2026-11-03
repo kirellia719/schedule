@@ -129,17 +129,17 @@ export default function ImportPeriodDialog({
             open={open}
             onClose={handleClose}
             fullWidth
-            maxWidth="xl"
+            maxWidth="sm"
         >
-            <DialogTitle>
-                NHẬP THỜI KHOÁ BIỂU
+            <DialogTitle sx={{ fontSize: 18, fontWeight: 600 }}>
+                Nhập thời khoá biểu
             </DialogTitle>
 
             <DialogContent dividers>
 
                 {!period && !loading && (
 
-                    <div className="py-8">
+                    <div className="py-4">
 
                         <div
                             onClick={() => inputRef.current?.click()}
@@ -151,7 +151,7 @@ export default function ImportPeriodDialog({
                             onDrop={handleDrop}
                             className={`
                                 flex
-                                h-72
+                                h-48
                                 w-full
                                 cursor-pointer
                                 flex-col
@@ -169,7 +169,7 @@ export default function ImportPeriodDialog({
                         >
                             <UploadFileIcon
                                 sx={{
-                                    fontSize: 64,
+                                    fontSize: 44,
                                 }}
                                 color="primary"
                             />
@@ -177,7 +177,9 @@ export default function ImportPeriodDialog({
                             <Typography
                                 variant="h6"
                                 sx={{
-                                    mt: 2,
+                                    mt: 1.5,
+                                    fontSize: 16,
+                                    fontWeight: 600,
                                 }}
                             >
                                 Chọn file Excel

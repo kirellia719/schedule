@@ -1,20 +1,47 @@
 import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
 
-export default function PeriodHeader({ onAdd, periods = [] }) {
-    const activePeriod = periods.find((period) => period.active);
-
+export default function PeriodHeader({
+    onAdd,
+    query = "",
+    onQueryChange,
+}) {
     return (
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900">
-                    Quản lý Thời khoá biểu
-                </h1>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
-                <p className="mt-1 text-sm text-slate-500">
-                    {periods.length > 0
-                        ? `${periods.length} bản • Đang áp dụng: ${activePeriod?.name ?? "chưa có"}`
-                        : "Chưa có bản thời khoá biểu nào."}
-                </p>
+            <div className="relative w-full sm:max-w-xs">
+
+                <SearchIcon
+                    sx={{ fontSize: 18 }}
+                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtle"
+                />
+
+                <input
+                    type="search"
+                    value={query}
+                    onChange={(event) => onQueryChange?.(event.target.value)}
+                    placeholder="Tìm theo tên hoặc ngày"
+                    aria-label="Tìm Period"
+                    className="
+                        h-10
+                        w-full
+                        rounded-lg
+                        border
+                        border-line
+                        bg-white
+                        pl-9
+                        pr-3
+                        text-sm
+                        text-ink
+                        transition
+                        placeholder:text-subtle
+                        focus:border-primary
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-primary/20
+                    "
+                />
+
             </div>
 
             <button
@@ -27,23 +54,22 @@ export default function PeriodHeader({ onAdd, periods = [] }) {
                     items-center
                     justify-center
                     gap-2
-                    rounded-sm
-                    bg-blue-600
+                    rounded-lg
+                    bg-primary
                     px-4
                     text-sm
                     font-medium
                     text-white
-                    transition-all
-                    duration-200
-                    hover:bg-blue-700
-                    active:scale-95
-                    cursor-pointer
+                    transition
+                    hover:bg-primary-strong
+                    active:scale-[.98]
                 "
             >
-                <AddIcon sx={{ fontSize: 20 }} />
+                <AddIcon sx={{ fontSize: 18 }} />
 
-                <span>Thêm Period</span>
+                Thêm Period
             </button>
+
         </div>
     );
 }

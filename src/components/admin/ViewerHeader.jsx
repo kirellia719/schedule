@@ -4,86 +4,33 @@ const Header = ({ period }) => {
     return (
         <header
             className="
+                flex
+                items-center
+                gap-3
                 rounded-2xl
                 border
-                border-slate-200
+                border-line
+                border-l-4
+                border-l-brand-700
                 bg-white
                 px-4
-                py-4
+                py-3.5
                 shadow-sm
-                sm:px-6
-                sm:py-5
+                sm:px-5
             "
         >
-            <div
-                className="
-                    flex
-                    flex-col
-                    gap-4
-                    sm:flex-row
-                    sm:items-center
-                    sm:justify-between
-                "
-            >
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-head-bg">
+                <CalendarMonthIcon
+                    className="text-head-ink"
+                    sx={{ fontSize: 18 }}
+                />
+            </div>
 
-                {/* Title */}
-
-                <div className="flex items-center gap-3">
-
-                    <div
-                        className="
-                            flex
-                            h-11
-                            w-11
-                            shrink-0
-                            items-center
-                            justify-center
-                            rounded-xl
-                            bg-blue-50
-                        "
-                    >
-                        <CalendarMonthIcon
-                            className="text-blue-700"
-                            sx={{ fontSize: 22 }}
-                        />
-                    </div>
-
-                    <div className="min-w-0">
-
-                        <h1 className="text-lg font-semibold text-slate-900 sm:text-xl">
-                            Tra cứu thời khoá biểu
-                        </h1>
-
-                        <p className="mt-0.5 truncate text-sm text-slate-500">
-                            {period?.applyDate
-                                ? `Áp dụng từ ${period.applyDate}`
-                                : "Chọn giáo viên hoặc lớp để xem lịch dạy, lịch học."}
-                        </p>
-
-                    </div>
-
-                </div>
-
-                {/* Status */}
+            <div className="min-w-0 flex-1">
 
                 <div className="flex flex-wrap items-center gap-2">
 
-                    <span
-                        className="
-                            inline-flex
-                            items-center
-                            gap-2
-                            rounded-full
-                            border
-                            border-slate-200
-                            bg-slate-50
-                            px-3
-                            py-1.5
-                            text-xs
-                            font-medium
-                            text-slate-700
-                        "
-                    >
+                    <span className="truncate text-sm font-semibold text-ink">
                         {period?.name ?? "Chưa có thời khoá biểu"}
                     </span>
 
@@ -93,14 +40,13 @@ const Header = ({ period }) => {
                             items-center
                             gap-1.5
                             rounded-full
-                            border
-                            px-3
-                            py-1.5
-                            text-xs
-                            font-medium
+                            px-2
+                            py-0.5
+                            text-[10px]
+                            font-semibold
                             ${period?.active
-                                ? "border-green-200 bg-green-50 text-green-700"
-                                : "border-amber-200 bg-amber-50 text-amber-700"
+                                ? "bg-success-bg text-success-ink"
+                                : "bg-amber-100 text-amber-700"
                             }
                         `}
                     >
@@ -121,7 +67,14 @@ const Header = ({ period }) => {
 
                 </div>
 
+                <p className="mt-0.5 truncate text-xs text-muted">
+                    {period?.applyDate
+                        ? `Áp dụng từ ${period.applyDate}`
+                        : "Chọn giáo viên hoặc lớp để tra cứu."}
+                </p>
+
             </div>
+
         </header>
     );
 };

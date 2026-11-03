@@ -2,7 +2,6 @@ import {
     CalendarMonth,
     Schedule,
     School,
-    Person,
     Logout,
 } from "@mui/icons-material";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -39,43 +38,37 @@ export default function Sidebar({
             className={`
                 flex
                 h-screen
-                w-[280px]
+                w-64
                 shrink-0
                 flex-col
                 border-r
-                border-slate-200
-                bg-white
+                border-line
+                bg-brand-800
+                text-muted
                 transition-transform
                 duration-300
                 ${mobile ? "shadow-2xl" : ""}
             `}
         >
-            {/* ================= Logo ================= */}
+            {/* Logo */}
 
-            <div className="border-b border-slate-200 p-6">
+            <div className="border-b border-line">
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 px-5 py-5">
 
-                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50">
-
-                        <School
-                            sx={{
-                                fontSize: 34,
-                                color: "#2563eb",
-                            }}
-                        />
-
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-primary shadow-sm">
+                        <School sx={{ fontSize: 22 }} />
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
 
-                        <h1 className="text-lg font-bold text-slate-800">
-                            THỜI KHÓA BIỂU
-                        </h1>
+                        <div className="truncate text-[15px] font-semibold leading-tight text-ink">
+                            Thời khoá biểu
+                        </div>
 
-                        <p className="text-sm text-slate-500">
-                            Admin Dashboard
-                        </p>
+                        <div className="text-xs text-muted">
+                            Quản trị
+                        </div>
 
                     </div>
 
@@ -83,15 +76,15 @@ export default function Sidebar({
 
             </div>
 
-            {/* ================= Menu ================= */}
+            {/* Menu */}
 
-            <nav className="flex-1 overflow-y-auto p-5">
+            <nav className="flex-1 overflow-y-auto px-3 py-4">
 
-                <div className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    MENU
+                <div className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-subtle">
+                    Điều hướng
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-1">
 
                     {MENUS.map((item) => {
                         const Icon = item.icon;
@@ -105,24 +98,23 @@ export default function Sidebar({
                                     `
                                         flex
                                         items-center
-                                        gap-4
-                                        rounded-sm
-                                        px-4
-                                        py-3
-                                        transition-all
+                                        gap-3
+                                        rounded-lg
+                                        px-3
+                                        py-2.5
+                                        text-sm
+                                        transition-colors
 
                                         ${isActive
-                                            ? "bg-blue-700 text-white shadow-lg shadow-blue-200"
-                                            : "text-slate-600 hover:bg-slate-100 hover:text-blue-600"
+                                            ? "bg-white font-semibold text-primary shadow-sm"
+                                            : "font-medium text-muted hover:bg-white/80 hover:text-ink"
                                         }
                                     `
                                 }
                             >
-                                <Icon fontSize="small" />
+                                <Icon sx={{ fontSize: 19 }} />
 
-                                <span className="font-medium">
-                                    {item.title}
-                                </span>
+                                <span>{item.title}</span>
 
                             </NavLink>
                         );
@@ -132,35 +124,9 @@ export default function Sidebar({
 
             </nav>
 
-            {/* ================= Footer ================= */}
+            {/* Logout */}
 
-            <div className="border-t border-slate-200 p-5">
-
-                <div className="mb-4 flex items-center gap-3 rounded-xl bg-slate-50 p-3">
-
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100">
-
-                        <Person
-                            sx={{
-                                color: "#2563eb",
-                            }}
-                        />
-
-                    </div>
-
-                    <div className="flex-1">
-
-                        <div className="font-semibold text-slate-800">
-                            Admin
-                        </div>
-
-                        <div className="text-sm text-slate-500">
-                            Quản trị hệ thống
-                        </div>
-
-                    </div>
-
-                </div>
+            <div className="border-t border-line p-3">
 
                 <button
                     onClick={handleLogout}
@@ -168,19 +134,19 @@ export default function Sidebar({
                         flex
                         w-full
                         items-center
-                        justify-center
-                        gap-2
-                        rounded-xl
-                        border
-                        border-red-200
-                        py-3
+                        gap-3
+                        rounded-lg
+                        px-3
+                        py-2.5
+                        text-sm
                         font-medium
-                        text-red-600
-                        transition
+                        text-muted
+                        transition-colors
                         hover:bg-red-50
+                        hover:text-red-700
                     "
                 >
-                    <Logout fontSize="small" />
+                    <Logout sx={{ fontSize: 19 }} />
 
                     Đăng xuất
 

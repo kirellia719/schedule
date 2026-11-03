@@ -10,6 +10,7 @@ import Login from "@/pages/admin/Login";
 import AdminLayout from "@/layouts/AdminLayout";
 
 import PeriodPage from "@/pages/admin/PeriodPage";
+import PeriodDetailPage from "@/pages/admin/PeriodDetailPage";
 import ViewerPage from "@/pages/admin/ViewerPage";
 
 import AdminRoute from "@/routes/AdminRoute";
@@ -68,6 +69,11 @@ export default function Router() {
                 <Route
                     path="period"
                     element={<PeriodPage />}
+                />
+
+                <Route
+                    path="period/:periodId"
+                    element={<PeriodDetailPage />}
                 />
 
                 {/* 404 trong Admin */}

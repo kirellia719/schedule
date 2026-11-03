@@ -13,12 +13,12 @@ import { normalizeLessons } from "@/utils/lesson";
 const TABS = [
     {
         key: "teacher",
-        label: "Theo giáo viên",
+        label: "Giáo viên",
         Icon: PersonIcon,
     },
     {
         key: "class",
-        label: "Theo lớp",
+        label: "Lớp",
         Icon: SchoolIcon,
     },
 ];
@@ -60,16 +60,12 @@ const ScheduleViewTabs = ({ schedule = {} }) => {
         return [...teachers].sort((a, b) => a.localeCompare(b, "vi"));
     }, [schedule]);
 
-    /**
-     * Dropdown hiện tại
-     */
     const currentOptions =
         activeTab === "teacher" ? teacherOptions : classOptions;
 
     /**
      * Mặc định chọn mục đầu tiên của tab đang mở.
-     * Tính ngay khi render (thay vì setState trong useEffect) để đổi tab
-     * chỉ render một lần, không bị nháy dữ liệu cũ.
+     * Tính ngay khi render để đổi tab chỉ render một lần, không bị nháy.
      */
     const picked = selection[activeTab];
 
@@ -191,90 +187,58 @@ const ScheduleViewTabs = ({ schedule = {} }) => {
     const hasOptions = currentOptions.length > 0;
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-3">
 
             {/* Toolbar */}
 
-            <div
-                className="
-                    flex
-                    flex-col
-                    gap-3
-                    rounded-2xl
-                    border
-                    border-slate-200
-                    bg-white
-                    p-3
-                    shadow-sm
-                    sm:p-4
-                    lg:flex-row
-                    lg:items-center
-                    lg:justify-between
-                "
-            >
+            <div className="flex flex-col gap-2 rounded-2xl border border-line bg-white p-2 shadow-sm lg:flex-row lg:items-center lg:justify-between">
 
-                {/* Tabs + số lượng */}
+                <div className="inline-flex rounded-lg bg-brand-50 p-1">
 
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                    {TABS.map(({ key, label, Icon }) => {
+                        const isActive = activeTab === key;
 
-                    <div className="inline-flex w-full rounded-xl bg-slate-100 p-1 sm:w-auto">
+                        return (
+                            <button
+                                key={key}
+                                type="button"
+                                onClick={() => handleTabChange(key)}
+                                aria-pressed={isActive}
+                                className={`
+                                    inline-flex
+                                    flex-1
+                                    items-center
+                                    justify-center
+                                    gap-1.5
+                                    rounded-md
+                                    px-3
+                                    py-1.5
+                                    text-[13px]
+                                    font-medium
+                                    transition-colors
+                                    lg:flex-none
+                                    ${isActive
+                                        ? "bg-white text-brand-800 shadow-sm"
+                                        : "text-muted hover:text-ink"
+                                    }
+                                `}
+                            >
+                                <Icon sx={{ fontSize: 16 }} />
 
-                        {TABS.map(({ key, label, Icon }) => {
-                            const isActive = activeTab === key;
-
-                            return (
-                                <button
-                                    key={key}
-                                    type="button"
-                                    onClick={() => handleTabChange(key)}
-                                    aria-pressed={isActive}
-                                    className={`
-                                        inline-flex
-                                        flex-1
-                                        items-center
-                                        justify-center
-                                        gap-2
-                                        rounded-lg
-                                        px-3
-                                        py-2
-                                        text-sm
-                                        font-medium
-                                        transition-colors
-                                        duration-150
-                                        sm:flex-none
-                                        sm:px-4
-                                        ${isActive
-                                            ? "bg-white text-blue-700 shadow-sm"
-                                            : "text-slate-600 hover:text-slate-900"
-                                        }
-                                    `}
-                                >
-                                    <Icon sx={{ fontSize: 18 }} />
-
-                                    <span>{label}</span>
-                                </button>
-                            );
-                        })}
-
-                    </div>
-
-                    <span className="hidden text-xs text-slate-500 sm:inline">
-                        {activeTab === "teacher"
-                            ? `${teacherOptions.length} giáo viên`
-                            : `${classOptions.length} lớp`}
-                    </span>
+                                {label}
+                            </button>
+                        );
+                    })}
 
                 </div>
 
-                {/* Select + Actions */}
+                <div className="flex items-center gap-2">
 
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-
-                    <div className="relative w-full sm:w-[260px]">
+                    <div className="relative min-w-0 flex-1 lg:w-56 lg:flex-none">
 
                         <PersonIcon
-                            sx={{ fontSize: 18 }}
-                            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                            sx={{ fontSize: 16 }}
+                            className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-subtle"
                         />
 
                         <select
@@ -287,26 +251,26 @@ const ScheduleViewTabs = ({ schedule = {} }) => {
                                     : "Chọn lớp"
                             }
                             className="
-                                h-10
+                                h-9
                                 w-full
                                 appearance-none
                                 truncate
-                                rounded-xl
+                                rounded-lg
                                 border
-                                border-slate-300
+                                border-line
                                 bg-white
-                                pl-9
-                                pr-9
+                                pl-8
+                                pr-8
                                 text-sm
-                                text-slate-800
+                                text-ink
                                 transition
-                                focus:border-blue-500
+                                focus:border-primary
                                 focus:outline-none
                                 focus:ring-2
-                                focus:ring-blue-100
+                                focus:ring-primary/20
                                 disabled:cursor-not-allowed
-                                disabled:bg-slate-50
-                                disabled:text-slate-400
+                                disabled:bg-surface-2
+                                disabled:text-subtle
                             "
                         >
 
@@ -324,77 +288,73 @@ const ScheduleViewTabs = ({ schedule = {} }) => {
                         </select>
 
                         <KeyboardArrowDownIcon
-                            sx={{ fontSize: 20 }}
-                            className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-500"
+                            sx={{ fontSize: 18 }}
+                            className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-subtle"
                         />
 
                     </div>
 
-                    <div className="flex items-center gap-2">
-
-                        <button
-                            type="button"
-                            onClick={handleCopyLink}
-                            disabled={!publicPath}
-                            title={
-                                copied
-                                    ? "Đã sao chép liên kết"
-                                    : "Sao chép liên kết tra cứu"
+                    <button
+                        type="button"
+                        onClick={handleCopyLink}
+                        disabled={!publicPath}
+                        title={
+                            copied
+                                ? "Đã sao chép liên kết"
+                                : "Sao chép liên kết tra cứu"
+                        }
+                        aria-label="Sao chép liên kết tra cứu"
+                        className={`
+                            flex
+                            h-9
+                            w-9
+                            shrink-0
+                            items-center
+                            justify-center
+                            rounded-lg
+                            border
+                            transition
+                            disabled:cursor-not-allowed
+                            disabled:opacity-40
+                            ${copied
+                                ? "border-green-200 bg-success-bg text-success-ink"
+                                : "border-line text-muted hover:bg-surface-2 hover:text-primary"
                             }
-                            aria-label="Sao chép liên kết tra cứu"
-                            className={`
-                                flex
-                                h-10
-                                w-10
-                                shrink-0
-                                items-center
-                                justify-center
-                                rounded-xl
-                                border
-                                transition
-                                disabled:cursor-not-allowed
-                                disabled:opacity-40
-                                ${copied
-                                    ? "border-green-200 bg-green-50 text-green-600"
-                                    : "border-slate-300 text-slate-500 hover:bg-slate-50 hover:text-blue-600"
-                                }
-                            `}
-                        >
-                            {copied ? (
-                                <CheckCircleIcon sx={{ fontSize: 18 }} />
-                            ) : (
-                                <ContentCopyIcon sx={{ fontSize: 18 }} />
-                            )}
-                        </button>
+                        `}
+                    >
+                        {copied ? (
+                            <CheckCircleIcon sx={{ fontSize: 17 }} />
+                        ) : (
+                            <ContentCopyIcon sx={{ fontSize: 17 }} />
+                        )}
+                    </button>
 
-                        <button
-                            type="button"
-                            onClick={handleOpenViewer}
-                            disabled={!publicPath}
-                            title="Mở trang tra cứu công khai"
-                            aria-label="Mở trang tra cứu công khai"
-                            className="
-                                flex
-                                h-10
-                                w-10
-                                shrink-0
-                                items-center
-                                justify-center
-                                rounded-xl
-                                border
-                                border-slate-300
-                                text-slate-500
-                                transition
-                                hover:bg-slate-50
-                                hover:text-blue-600
-                                disabled:cursor-not-allowed
-                                disabled:opacity-40
-                            "
-                        >
-                            <VisibilityIcon sx={{ fontSize: 18 }} />
-                        </button>
-
-                    </div>
+                    <button
+                        type="button"
+                        onClick={handleOpenViewer}
+                        disabled={!publicPath}
+                        title="Mở trang tra cứu công khai"
+                        aria-label="Mở trang tra cứu công khai"
+                        className="
+                            flex
+                            h-9
+                            w-9
+                            shrink-0
+                            items-center
+                            justify-center
+                            rounded-lg
+                            border
+                            border-line
+                            text-slate-500
+                            transition
+                            hover:bg-slate-50
+                            hover:text-primary
+                            disabled:cursor-not-allowed
+                            disabled:opacity-40
+                        "
+                    >
+                        <VisibilityIcon sx={{ fontSize: 17 }} />
+                    </button>
 
                 </div>
 
@@ -417,7 +377,7 @@ const ScheduleViewTabs = ({ schedule = {} }) => {
                     />
                 </div>
             ) : (
-                <div className="rounded-2xl border border-slate-200 bg-white px-4 py-16 text-center text-slate-500 shadow-sm">
+                <div className="rounded-2xl border border-line bg-white px-4 py-16 text-center text-sm text-muted shadow-sm">
                     Chưa có dữ liệu thời khoá biểu cho mục này.
                 </div>
             )}
