@@ -9,8 +9,8 @@ import "./assets/styles/globals.css";
 const theme = createTheme({
     palette: {
         primary: {
-            main: "#587aa7",
-            dark: "#42658f",
+            main: "#2563eb",
+            dark: "#1d4ed8",
         },
     },
     shape: {

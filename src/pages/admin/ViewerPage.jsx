@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import ViewerHeader from "@/components/admin/ViewerHeader";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+
 import ScheduleViewTabs from "@/components/admin/ScheduleViewTabs";
+import { useSetAdminHeader } from "@/components/admin/adminHeader";
 
 import { getActivePeriod } from "@/services/period.service";
 
@@ -13,6 +15,70 @@ export default function ViewerPage() {
     const [loading, setLoading] = useState(true);
 
     const [error, setError] = useState("");
+
+    const header = useMemo(() => {
+        if (!period) return null;
+
+        return (
+            <div className="flex min-w-0 items-center gap-3">
+
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#3b82f6] to-[#1d4ed8] text-white shadow-sm shadow-blue-500/25">
+                    <CalendarMonthIcon sx={{ fontSize: 18 }} />
+                </div>
+
+                <div className="min-w-0">
+
+                    <div className="flex min-w-0 items-center gap-2">
+
+                        <span className="truncate text-[15px] font-bold text-[#0f2b52]">
+                            {period.name}
+                        </span>
+
+                        <span
+                            className={`
+                                hidden
+                                shrink-0
+                                items-center
+                                gap-1.5
+                                rounded-full
+                                px-2
+                                py-0.5
+                                text-[10px]
+                                font-semibold
+                                sm:inline-flex
+                                ${period.active
+                                    ? "bg-success-bg text-success-ink"
+                                    : "bg-amber-100 text-amber-700"
+                                }
+                            `}
+                        >
+                            <span
+                                className={`
+                                    h-1.5
+                                    w-1.5
+                                    rounded-full
+                                    ${period.active ? "bg-green-500" : "bg-amber-500"}
+                                `}
+                            />
+
+                            {period.active ? "Đang áp dụng" : "Chưa áp dụng"}
+                        </span>
+
+                    </div>
+
+                    <p className="truncate text-xs text-muted">
+                        {period.applyDate
+                            ? `Áp dụng từ ${period.applyDate}`
+                            : "Chưa có ngày áp dụng"}
+                    </p>
+
+                </div>
+
+            </div>
+        );
+    }, [period]);
+
+    useSetAdminHeader(header);
 
     useEffect(() => {
 
@@ -94,17 +160,7 @@ export default function ViewerPage() {
     }
 
     return (
-
-        <div className="space-y-3">
-
-            <ViewerHeader
-                period={period}
-            />
-
-            <ScheduleViewTabs schedule={period?.schedule || {}} />
-
-        </div>
-
+        <ScheduleViewTabs schedule={period?.schedule || {}} />
     );
 
 }

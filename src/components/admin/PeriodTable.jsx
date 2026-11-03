@@ -88,7 +88,7 @@ export default function PeriodTable({
 
             <div className="hidden md:block">
 
-                <div className="flex items-center gap-4 border-b border-line bg-head px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-head-ink">
+                <div className="flex items-center gap-4 border-b border-grid-line bg-head px-5 py-3 text-[11px] font-bold uppercase tracking-wider text-head-ink">
 
                     <span className="flex-1">Bản thời khoá biểu</span>
 

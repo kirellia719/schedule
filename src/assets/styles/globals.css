@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-    --color-canvas: #f3f6fb;
+    --color-canvas: #edf3fb;
     --color-surface: #ffffff;
     --color-surface-2: #f4f7fc;
     --color-line: #dbe4f0;
@@ -11,18 +11,25 @@
 
     --color-brand-900: #dfe8f5;
     --color-brand-800: #e7eef8;
-    --color-brand-700: #8da8cb;
+    --color-brand-700: #7aa7ea;
     --color-brand-50: #f2f6fc;
 
-    --color-primary: #587aa7;
-    --color-primary-strong: #42658f;
+    --color-primary: #2563eb;
+    --color-primary-strong: #1d4ed8;
 
-    --color-head: #dce7f5;
-    --color-head-soft: #eaf0f8;
-    --color-head-ink: #304b6b;
+    --color-head: #f7fafd;
+    --color-head-soft: #eef4fb;
+    --color-head-ink: #1e3a8a;
+    --color-head-line: #e2ebf7;
 
-    --color-session-bg: #f1f3f6;
-    --color-session-ink: #515d6c;
+    --color-session-bg: #ffffff;
+    --color-session-ink: #1e3a8a;
+
+    --color-morning-bg: #eef3fa;
+    --color-morning-ink: #1e3a8a;
+    --color-afternoon-bg: #e8f1fc;
+    --color-afternoon-ink: #1e3a8a;
+    --color-grid-line: #e4edf8;
 
     --color-success-ink: #15803d;
     --color-success-bg: #dcfce7;
@@ -36,8 +43,6 @@
 body {
     background: var(--color-canvas);
     color: var(--color-ink);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes view-fade-in {

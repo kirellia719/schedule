@@ -41,7 +41,7 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                 key={`${dayKey}-${period.key}`}
                 className="
                     border-l
-                    border-line
+                    border-grid-line
                     p-1
                     text-center
                     align-middle
@@ -57,7 +57,7 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                                     min-w-0
                                     flex-1
                                     ${index > 0
-                                        ? "border-l border-line pl-1 sm:pl-1.5"
+                                        ? "border-l border-grid-line pl-1 sm:pl-1.5"
                                         : ""
                                     }
                                 `}
@@ -72,13 +72,13 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                                     .filter(Boolean)
                                     .join(" · ")}
                             >
-                                <div className="w-full truncate text-[10px] font-semibold text-head-ink sm:text-[11px] md:text-sm">
+                                <div className="w-full truncate text-[10px] font-bold text-head-ink sm:text-[11px] md:text-sm">
                                     {isTeacherView
                                         ? lesson.class
                                         : lesson.subject}
                                 </div>
 
-                                <div className="mt-0.5 w-full truncate text-[9px] text-muted sm:text-[10px] md:text-xs">
+                                <div className="mt-0.5 w-full truncate text-[9px] text-[#54706c] sm:text-[10px] md:text-xs">
                                     {isTeacherView
                                         ? lesson.subject
                                         : lesson.teacher}
@@ -98,21 +98,32 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
 
         return (
             <>
-                <tr className="bg-session-bg">
+                <tr className="bg-[#edf4fd]">
                     <td
                         colSpan={DAYS.length + 1}
-                        className="border-y border-line px-4 py-2"
+                        className="border-y border-grid-line px-3 py-1.5"
                     >
-                        <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-session-ink">
+                        <div
+                            className={`
+                                flex
+                                items-center
+                                gap-1.5
+                                text-[11px]
+                                font-bold
+                                uppercase
+                                tracking-wider
+                                ${isMorning ? "text-morning-ink" : "text-afternoon-ink"}
+                            `}
+                        >
                             {isMorning ? (
                                 <LightMode
-                                    sx={{ fontSize: 14 }}
+                                    sx={{ fontSize: 15 }}
                                     className="text-amber-500"
                                 />
                             ) : (
                                 <NightsStay
-                                    sx={{ fontSize: 14 }}
-                                    className="text-indigo-400"
+                                    sx={{ fontSize: 15 }}
+                                    className="text-[#2b5fb0]"
                                 />
                             )}
 
@@ -124,14 +135,14 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                 {list.map(period => (
                     <tr
                         key={period.key}
-                        className="border-b border-line transition-colors last:border-0 hover:bg-brand-50"
+                        className="border-b border-grid-line transition-colors last:border-0 hover:bg-[#f5f9ff]"
                     >
-                        <td className="border-r border-line px-1 py-2 text-center align-middle">
-                            <div className="text-xs font-semibold text-ink md:text-sm">
+                        <td className="border-r border-grid-line px-1 py-2 text-center align-middle">
+                            <div className="text-xs font-bold text-head-ink md:text-sm">
                                 {period.label}
                             </div>
 
-                            <div className="mt-0.5 hidden text-[10px] tabular-nums text-subtle md:block">
+                            <div className="mt-0.5 hidden text-[10px] tabular-nums text-[#64748b] md:block">
                                 {period.start} – {period.end}
                             </div>
                         </td>
@@ -144,20 +155,21 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
     };
 
     return (
-        <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-[0_1px_2px_rgba(15,23,42,.06),0_10px_30px_-18px_rgba(15,23,42,.35)]">
+        <div className="overflow-hidden rounded-2xl border border-grid-line bg-white shadow-sm">
 
-            <table className="w-full table-fixed border-collapse">
+            <table className="w-full table-fixed border-collapse bg-white">
                 <thead>
-                    <tr className="border-b border-line bg-head">
+                    <tr className="border-b border-grid-line bg-white">
                         <th
                             className="
                                 w-14
                                 border-r
-                                border-line
+                                border-grid-line
                                 px-1
-                                py-2.5
-                                text-[10px]
-                                font-semibold
+                                py-3
+                                text-xs
+                                md:text-sm
+                                font-bold
                                 uppercase
                                 tracking-wider
                                 text-head-ink
@@ -171,11 +183,14 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                             <th
                                 key={day.key}
                                 className="
+                                    border-r
+                                    border-grid-line
                                     px-1
-                                    py-2.5
+                                    py-3
                                     text-xs
                                     font-semibold
                                     text-head-ink
+                                    last:border-r-0
                                     md:text-sm
                                 "
                             >

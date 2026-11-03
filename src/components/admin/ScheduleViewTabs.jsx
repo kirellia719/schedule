@@ -141,7 +141,7 @@ const ScheduleViewTabs = ({ schedule = {} }) => {
                             (item) =>
                                 item.class === lesson.class &&
                                 (item.subject || "") ===
-                                    (lesson.subject || "")
+                                (lesson.subject || "")
                         );
 
                         if (!exists) {
@@ -193,7 +193,7 @@ const ScheduleViewTabs = ({ schedule = {} }) => {
 
             <div className="flex flex-col gap-2 rounded-2xl border border-line bg-white p-2 shadow-sm lg:flex-row lg:items-center lg:justify-between">
 
-                <div className="inline-flex rounded-lg bg-brand-50 p-1">
+                <div className="inline-flex items-center gap-1.5">
 
                     {TABS.map(({ key, label, Icon }) => {
                         const isActive = activeTab === key;
@@ -210,16 +210,16 @@ const ScheduleViewTabs = ({ schedule = {} }) => {
                                     items-center
                                     justify-center
                                     gap-1.5
-                                    rounded-md
+                                    rounded-full
                                     px-3
                                     py-1.5
                                     text-[13px]
-                                    font-medium
+                                    font-semibold
                                     transition-colors
                                     lg:flex-none
                                     ${isActive
-                                        ? "bg-white text-brand-800 shadow-sm"
-                                        : "text-muted hover:text-ink"
+                                        ? "bg-[#1669ec] font-bold text-white shadow-sm "
+                                        : "border border-line bg-white text-[#334155] hover:bg-[#f5f8fd]"
                                     }
                                 `}
                             >
