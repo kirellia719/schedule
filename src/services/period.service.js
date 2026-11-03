@@ -1,8 +1,10 @@
 import {
     collection,
     doc,
+    getDoc,
     getDocs,
     setDoc,
+    updateDoc,
     deleteDoc,
     limit,
     query,
@@ -72,6 +74,22 @@ export async function getActivePeriod() {
     };
 }
 
+export async function getPeriodById(periodId) {
+
+    if (!periodId) return null;
+
+    const snapshot = await getDoc(
+        doc(db, "periods", periodId)
+    );
+
+    if (!snapshot.exists()) return null;
+
+    return {
+        id: snapshot.id,
+        ...snapshot.data(),
+    };
+}
+
 export async function createPeriod(period) {
 
     if (!period.name)
@@ -85,6 +103,20 @@ export async function createPeriod(period) {
 
     //------------------------------------
 
+    const name = period.name.trim();
+
+    const duplicated = await getDocs(
+        query(
+            collection(db, "periods"),
+            where("name", "==", name),
+            limit(1)
+        )
+    );
+
+    if (!duplicated.empty) {
+        throw new Error(`Đã có Period tên "${name}".`);
+    }
+
     const id = await generatePeriodId();
 
     //------------------------------------
@@ -92,7 +124,7 @@ export async function createPeriod(period) {
     await setDoc(
         doc(db, "periods", id),
         {
-            name: period.name,
+            name,
             applyDate: period.applyDate,
             active: period.active,
             schedule: period.schedule,
@@ -156,4 +188,43 @@ export async function setActivePeriod(periodId) {
 
 export async function getClasses() { }
 
-export async function updatePeriod() { }
+export async function updatePeriod(periodId, data) {
+
+    if (!periodId)
+        throw new Error("Thiếu Period cần cập nhật.");
+
+    const payload = {};
+
+    if (typeof data?.name === "string") {
+
+        const name = data.name.trim();
+
+        if (!name)
+            throw new Error("Tên Period không được để trống.");
+
+        const duplicated = await getDocs(
+            query(
+                collection(db, "periods"),
+                where("name", "==", name),
+                limit(1)
+            )
+        );
+
+        if (!duplicated.empty && duplicated.docs[0].id !== periodId) {
+            throw new Error(`Đã có Period tên "${name}".`);
+        }
+
+        payload.name = name;
+    }
+
+    if (typeof data?.applyDate === "string") {
+        payload.applyDate = data.applyDate;
+    }
+
+    if (Object.keys(payload).length === 0) return;
+
+    await updateDoc(
+        doc(db, "periods", periodId),
+        payload
+    );
+}

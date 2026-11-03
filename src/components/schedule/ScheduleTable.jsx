@@ -16,19 +16,6 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
         )
     );
 
-    // Tổng số tiết trong tuần
-    // const totalLessons = Object.values(schedule ?? {}).reduce(
-    //     (total, day) => {
-    //         return (
-    //             total +
-    //             Object.values(day).filter(
-    //                 lesson => lesson
-    //             ).length
-    //         );
-    //     },
-    //     0
-    // );
-
     // Chỉ lấy các tiết cần hiển thị
     const periods = PERIODS.filter(
         period => Number(period.key) <= maxPeriod
@@ -42,24 +29,23 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
         period => Number(period.key) >= 5
     );
 
+    const isTeacherView = view === "teacher";
+
     const renderCell = (dayKey, period) => {
         const lessons = normalizeLessons(
             schedule?.[dayKey]?.[period.key]
         );
 
-        const isTeacherView = view === "teacher";
-
         return (
             <td
                 key={`${dayKey}-${period.key}`}
                 className="
-                    border
-                    border-slate-200
-                    p-0.5
+                    border-l
+                    border-line
+                    p-1
                     text-center
                     align-middle
-                    sm:p-1
-                    md:p-2
+                    sm:p-1.5
                 "
             >
                 {lessons.length > 0 && (
@@ -71,7 +57,7 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                                     min-w-0
                                     flex-1
                                     ${index > 0
-                                        ? "border-l border-slate-200 pl-1 sm:pl-1.5"
+                                        ? "border-l border-line pl-1 sm:pl-1.5"
                                         : ""
                                     }
                                 `}
@@ -86,15 +72,13 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                                     .filter(Boolean)
                                     .join(" · ")}
                             >
-                                {/* Dòng chính: view lớp là môn, view giáo viên là lớp */}
-                                <div className="w-full truncate font-semibold text-[9px] text-blue-900 sm:text-[11px] md:text-base">
+                                <div className="w-full truncate text-[10px] font-semibold text-head-ink sm:text-[11px] md:text-sm">
                                     {isTeacherView
                                         ? lesson.class
                                         : lesson.subject}
                                 </div>
 
-                                {/* Dòng phụ: view lớp là giáo viên, view giáo viên là môn */}
-                                <div className="mt-0.5 w-full truncate text-[8px] text-slate-500 sm:text-[10px] md:text-sm">
+                                <div className="mt-0.5 w-full truncate text-[9px] text-muted sm:text-[10px] md:text-xs">
                                     {isTeacherView
                                         ? lesson.subject
                                         : lesson.teacher}
@@ -114,21 +98,21 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
 
         return (
             <>
-                <tr className="bg-blue-50">
+                <tr className="bg-session-bg">
                     <td
                         colSpan={DAYS.length + 1}
-                        className="border border-slate-200 px-4 py-2"
+                        className="border-y border-line px-4 py-2"
                     >
-                        <div className="flex items-center gap-2 font-semibold text-blue-900">
+                        <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-session-ink">
                             {isMorning ? (
                                 <LightMode
-                                    className="text-yellow-500"
-                                    fontSize="small"
+                                    sx={{ fontSize: 14 }}
+                                    className="text-amber-500"
                                 />
                             ) : (
                                 <NightsStay
+                                    sx={{ fontSize: 14 }}
                                     className="text-indigo-400"
-                                    fontSize="small"
                                 />
                             )}
 
@@ -138,26 +122,17 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                 </tr>
 
                 {list.map(period => (
-                    <tr key={period.key}>
-                        <td
-                            className="
-                                w-10
-                                border
-                                border-slate-200
-                                bg-slate-50
-                                px-1
-                                py-2
-                                text-center
-                                md:w-20
-                            "
-                        >
-                            <div className="font-bold text-blue-900 text-[9px] sm:text-[11px] md:text-base">
+                    <tr
+                        key={period.key}
+                        className="border-b border-line transition-colors last:border-0 hover:bg-brand-50"
+                    >
+                        <td className="border-r border-line px-1 py-2 text-center align-middle">
+                            <div className="text-xs font-semibold text-ink md:text-sm">
                                 {period.label}
                             </div>
 
-                            {/* Desktop */}
-                            <div className="mt-1 hidden md:block text-[11px] text-slate-500 whitespace-nowrap">
-                                {period.start} - {period.end}
+                            <div className="mt-0.5 hidden text-[10px] tabular-nums text-subtle md:block">
+                                {period.start} – {period.end}
                             </div>
                         </td>
 
@@ -169,21 +144,24 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
     };
 
     return (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-[0_1px_2px_rgba(15,23,42,.06),0_10px_30px_-18px_rgba(15,23,42,.35)]">
 
             <table className="w-full table-fixed border-collapse">
                 <thead>
-                    <tr className="bg-slate-100">
+                    <tr className="border-b border-line bg-head">
                         <th
                             className="
-                                w-10
-                                border
-                                border-slate-200
-                                py-2
+                                w-14
+                                border-r
+                                border-line
+                                px-1
+                                py-2.5
                                 text-[10px]
-                                font-bold
+                                font-semibold
+                                uppercase
+                                tracking-wider
+                                text-head-ink
                                 md:w-20
-                                md:text-base
                             "
                         >
                             Tiết
@@ -193,12 +171,12 @@ export default function ScheduleTable({ schedule, view = "teacher" }) {
                             <th
                                 key={day.key}
                                 className="
-                                    border
-                                    border-slate-200
-                                    py-2
-                                    text-[10px]
-                                    font-bold
-                                    md:text-base
+                                    px-1
+                                    py-2.5
+                                    text-xs
+                                    font-semibold
+                                    text-head-ink
+                                    md:text-sm
                                 "
                             >
                                 {day.label}
